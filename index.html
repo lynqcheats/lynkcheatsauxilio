@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LYNQ Control Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .login-container, .panel-container {
+            background: rgba(20, 20, 20, 0.95);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .panel-container {
+            max-width: 600px;
+            display: none;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #ff0000;
+            font-size: 2.5em;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            letter-spacing: 3px;
+        }
+
+        .logo p {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ff0000;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1em;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #ff3333;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #ff3333 0%, #ff0000 100%);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: #ff0000;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .control-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #ff0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-section h3 {
+            color: #ff0000;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        .control-item label {
+            color: #fff;
+        }
+
+        .toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: 0.4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #ff0000;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .range-control {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .range-control input[type="range"] {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .range-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #ff0000;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .range-value {
+            color: #ff0000;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #444 0%, #222 100%);
+            margin-top: 20px;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #555 0%, #333 100%);
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            color: #00ff00;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div class="login-container" id="loginScreen">
+        <div class="logo">
+            <h1>LYNQ</h1>
+            <p>Control Panel Access</p>
+        </div>
+        <div class="input-group">
+            <label>Senha de Acesso</label>
+            <input type="password" id="passwordInput" placeholder="Digite a senha">
+        </div>
+        <button class="btn" onclick="login()">ACESSAR</button>
+        <div class="error" id="errorMsg">Senha incorreta!</div>
+    </div>
+
+    <!-- Painel de Controle -->
+    <div class="panel-container" id="mainPanel">
+        <div class="logo">
+            <h1>LYNQ</h1>
+            <p>Control Panel</p>
+        </div>
+
+        <div class="status">
+            ✓ Sistema Ativo
+        </div>
+
+        <div class="control-section">
+            <h3>⚙️ Configurações Principais</h3>
+            
+            <div class="control-item">
+                <label>Modo Auxiliar</label>
+                <label class="toggle">
+                    <input type="checkbox" id="auxMode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="control-item">
+                <label>Auto-Otimização</label>
+                <label class="toggle">
+                    <input type="checkbox" id="autoOpt">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="control-item">
+                <label>Estabilizador</label>
+                <label class="toggle">
+                    <input type="checkbox" id="stabilizer">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>🎯 Ajustes Avançados</h3>
+            
+            <div class="control-item range-control">
+                <label>Sensibilidade: <span class="range-value" id="sensValue">50</span></label>
+                <input type="range" min="0" max="100" value="50" id="sensitivity" oninput="updateValue('sensValue', this.value)">
+            </div>
+
+            <div class="control-item range-control">
+                <label>Campo de Visão: <span class="range-value" id="fovValue">90</span>°</label>
+                <input type="range" min="60" max="120" value="90" id="fov" oninput="updateValue('fovValue', this.value)">
+            </div>
+
+            <div class="control-item range-control">
+                <label>Suavização: <span class="range-value" id="smoothValue">50</span>%</label>
+                <input type="range" min="0" max="100" value="50" id="smooth" oninput="updateValue('smoothValue', this.value)">
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>🚀 Ações Rápidas</h3>
+            <button class="btn">Iniciar Aplicação</button>
+            <button class="btn" style="margin-top: 10px; background: linear-gradient(135deg, #0066ff 0%, #0044cc 100%);">Salvar Configurações</button>
+        </div>
+
+        <button class="btn logout-btn" onclick="logout()">SAIR</button>
+    </div>
+
+    <script>
+        const correctPassword = "LYNQCHEATS-AUXILIO123";
+
+        function login() {
+            const input = document.getElementById('passwordInput').value;
+            const error = document.getElementById('errorMsg');
+            
+            if (input === correctPassword) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainPanel').style.display = 'block';
+                error.style.display = 'none';
+            } else {
+                error.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('mainPanel').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        function updateValue(elementId, value) {
+            document.getElementById(elementId).textContent = value;
+        }
+
+        // Permitir login com Enter
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
